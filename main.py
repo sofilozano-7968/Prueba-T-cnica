@@ -46,7 +46,7 @@ def calcular_match(candidato: Candidato, vacante: Vacante):
             "indefinido": 1.0,
             "obra_laboral": 5,
             "prestacion de servicios": 0
-        } ^[vacante.tipo_contrato]
+        } [vacante.tipo_contrato]
 
     score = round(
             cobertura * 70 + max(0, 1 - brecha_experiencia / 5) * 20 + bono 
