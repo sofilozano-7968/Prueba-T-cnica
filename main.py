@@ -7,9 +7,11 @@ from pydantic import BaseModel, Field
 
 app = FastAPI(title="Trycore Match API")
 
+# Redirección automática de la raíz al /docs
 @app.get("/", include_in_schema=False)
 def redirigir_a_docs():
     return RedirectResponse(url="/docs")
+
 class Candidato(BaseModel):
     skills: list[str]
     experiencia_anios: int = Field(..., ge=0)
@@ -27,20 +29,19 @@ class Solicitud(BaseModel):
     vacante: Vacante
 
 @app.exception_handler(RequestValidationError)
-async def error_validacion(request: Request , exc:
-RequestValidationError):
+async def error_validacion(request: Request, exc: RequestValidationError):
     error = exc.errors()[0]
     campo = str(error.get("loc")[-1])
     mensaje = (
-        f"campo  {campo } requerido"
-        if error ["type"] == "missing"
+        f"campo {campo} requerido"
+        if error["type"] == "missing"
         else f"tipo de dato invalido para el campo {campo}"
     )
     return JSONResponse(status_code=400, content={"error": mensaje})
 
 def calcular_match(candidato: Candidato, vacante: Vacante):
     requeridas = set(vacante.skills_requeridas)
-    coincidencias  = len(set(candidato.skills) & requeridas)
+    coincidencias = len(set(candidato.skills) & requeridas)
     cobertura = coincidencias / len(requeridas) if requeridas else 1.0
 
     brecha_experiencia = max(0, vacante.experiencia_min - candidato.experiencia_anios)
@@ -49,7 +50,7 @@ def calcular_match(candidato: Candidato, vacante: Vacante):
             "indefinido": 1.0,
             "obra_laboral": 5,
             "prestacion de servicios": 0
-        } [vacante.tipo_contrato]
+        }[vacante.tipo_contrato]
 
     score = round(
             cobertura * 70 + max(0, 1 - brecha_experiencia / 5) * 20 + bono 
@@ -72,45 +73,13 @@ def calcular_match(candidato: Candidato, vacante: Vacante):
     ]
 
     return {
-            
             "score": score,
             "categoria": categoria,
             "razones": razones,
             "cobertura_skills": cobertura,
             "brecha_experiencia": brecha_experiencia,
-            }
+        }
 
 @app.post("/match")
 def match(solicitud: Solicitud):
     return calcular_match(solicitud.candidato, solicitud.vacante)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
