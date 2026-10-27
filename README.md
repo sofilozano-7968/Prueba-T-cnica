@@ -113,37 +113,7 @@ http://127.0.0.1:8000/docs
 
 Recibe la información de un candidato y una vacante, y devuelve el resultado del cálculo de compatibilidad.
 
-### Ejemplo de solicitud
 
-```json
-{
-  "candidato": {
-    "skills": ["python", "sql", "html"],
-    "experiencia_anios": 3
-  },
-  "vacante": {
-    "skills_requeridas": ["python", "sql"],
-    "experiencia_min": 2,
-    "tipo_contrato": "indefinido"
-  }
-}
-```
-
-### Respuesta esperada
-
-```json
-{
-  "score": 91,
-  "categoria": "EXCELLENT_FIT",
-  "razones": [
-    "Coincide en 2 de 2 skills",
-    "Brecha de experiencia: 0 años",
-    "Bonificación por tipo de contrato: 1.0 puntos"
-  ],
-  "cobertura_skills": 1.0,
-  "brecha_experiencia": 0
-}
-```
 
 ### Descripción de los campos de respuesta
 
