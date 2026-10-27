@@ -2,11 +2,14 @@ from typing import Literal
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field 
 
 app = FastAPI(title="Trycore Match API")
 
+@app.get("/", include_in_schema=False)
+def redirigir_a_docs():
+    return RedirectResponse(url="/docs")
 class Candidato(BaseModel):
     skills: list[str]
     experiencia_anios: int = Field(..., ge=0)
