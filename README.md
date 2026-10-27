@@ -1,32 +1,27 @@
 # Trycore Match API 🚀
 
-API desarrollada con **FastAPI** para evaluar y calcular la compatibilidad (*match*) entre los perfiles de candidatos y los requerimientos de las vacantes laborales.
+Micro-servicio desarrollado con **FastAPI** para evaluar el nivel de compatibilidad (*match*) entre el perfil de un candidato y los requerimientos de una vacante laboral.
 
 ---
 
-## 📋 Descripción
+## 📋 Características y Reglas de Negocio
 
-Esta aplicación analiza la información provista sobre un candidato y una vacante, calculando un puntaje (*score*) de 0 a 100 basado en:
-* **Cobertura de habilidades (*skills*):** Porcentaje de coincidencia entre las habilidades requeridas y las del candidato.
-* **Brecha de experiencia:** Diferencia en años respecto al mínimo requerido por la vacante.
-* **Bonificación por tipo de contrato:** Puntos adicionales según el tipo de contratación propuesta (*indefinido*, *obra_laboral*, *prestación de servicios*).
+La API evalúa tres factores principales para calcular una puntuación de 0 a 100:
+1. **Cobertura de skills (70%):** Porcentaje de habilidades del candidato que coinciden con las de la vacante.
+2. **Brecha de experiencia (20%):** Penalización por los años faltantes respecto al mínimo requerido.
+3. **Tipo de contrato (10%):** Bonificación según la contratación: `indefinido` (+10 pts), `obra_laboral` (+5 pts), `prestacion_servicios` (+0 pts).
 
-Además, clasifica el resultado en categorías (`NO_FIT`, `MAYBE`, `GOOD_FIT`, `EXCELLENT_FIT`) y proporciona una lista detallada con las razones del puntaje obtenido.
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-* **Python 3.13+**
-* **FastAPI** (Framework web asíncrono)
-* **Pydantic** (Validación de datos y esquemas)
-* **Uvicorn** (Servidor ASGI)
+### Categorización del Match:
+* **`EXCELLENT_FIT`**: Score ≥ 85
+* **`GOOD_FIT`**: 65 ≤ Score < 85
+* **`MAYBE`**: 40 ≤ Score < 65
+* **`NO_FIT`**: Score < 40
 
 ---
 
-## ⚙️ Instalación y Configuración Local
+## ⚙️ Cómo Correr (Instalación y Ejecución)
 
-1. **Clona el repositorio:**
+1. **Clonar el repositorio:**
    ```bash
    git clone [https://github.com/sofilozano-7968/Prueba-T-cnica.git](https://github.com/sofilozano-7968/Prueba-T-cnica.git)
    cd trycore-match
